@@ -1,5 +1,7 @@
 # Featurize — Feature Voting System
 
+![Featurize Preview](./docs/images/featurized.png)
+
 ## Overview
 
 A full-stack feature voting platform where users can submit,
