@@ -1,13 +1,13 @@
-import api from '@/lib/axios'
-import type { AuthResponse, User } from '@/types'
+import api from "@/lib/axios";
+import type { AuthResponse, User } from "@/types";
 
 export const authService = {
   async login(email: string, password: string): Promise<AuthResponse> {
-    const { data } = await api.post<AuthResponse>('/auth/login', {
+    const { data } = await api.post<AuthResponse>("/auth/login", {
       email,
       password,
-    })
-    return data
+    });
+    return data;
   },
 
   async register(
@@ -15,16 +15,16 @@ export const authService = {
     email: string,
     password: string,
   ): Promise<AuthResponse> {
-    const { data } = await api.post<AuthResponse>('/auth/register', {
+    const { data } = await api.post<AuthResponse>("/auth/register", {
       name,
       email,
       password,
-    })
-    return data
+    });
+    return data;
   },
 
   async me(): Promise<User> {
-    const { data } = await api.get<User>('/auth/me')
-    return data
+    const { data } = await api.get<User>("/auth/me");
+    return data;
   },
-}
+};

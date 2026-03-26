@@ -1,35 +1,35 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Zap } from 'lucide-react'
-import { useAuth } from '@/hooks/useAuth'
-import { loginSchema, registerSchema } from '@/validations'
-import type { LoginInput, RegisterInput } from '@/validations'
-import axios from 'axios'
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Zap } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { loginSchema, registerSchema } from "@/validations";
+import type { LoginInput, RegisterInput } from "@/validations";
+import axios from "axios";
 
 // ── Password strength indicator ───────────────────────────────────────────────
 function PasswordStrength({ value }: { value: string }) {
-  if (!value) return null
-  const hasLength = value.length >= 8
-  const hasNumber = /\d/.test(value)
+  if (!value) return null;
+  const hasLength = value.length >= 8;
+  const hasNumber = /\d/.test(value);
 
-  let label: string
-  let color: string
-  let width: string
+  let label: string;
+  let color: string;
+  let width: string;
 
   if (!hasLength) {
-    label = 'Weak'
-    color = 'bg-red-500'
-    width = 'w-1/3'
+    label = "Weak";
+    color = "bg-red-500";
+    width = "w-1/3";
   } else if (!hasNumber) {
-    label = 'Medium'
-    color = 'bg-yellow-500'
-    width = 'w-2/3'
+    label = "Medium";
+    color = "bg-yellow-500";
+    width = "w-2/3";
   } else {
-    label = 'Strong'
-    color = 'bg-green-500'
-    width = 'w-full'
+    label = "Strong";
+    color = "bg-green-500";
+    width = "w-full";
   }
 
   return (
@@ -41,38 +41,38 @@ function PasswordStrength({ value }: { value: string }) {
       </div>
       <p className="mt-1 text-xs text-white/40">{label}</p>
     </div>
-  )
+  );
 }
 
 // ── Field error ───────────────────────────────────────────────────────────────
 function FieldError({ message }: { message?: string }) {
-  if (!message) return null
-  return <p className="mt-1 text-xs text-red-400">{message}</p>
+  if (!message) return null;
+  return <p className="mt-1 text-xs text-red-400">{message}</p>;
 }
 
 // ── Sign In Form ──────────────────────────────────────────────────────────────
 function SignInForm() {
-  const navigate = useNavigate()
-  const { login } = useAuth()
-  const [serverError, setServerError] = useState('')
+  const navigate = useNavigate();
+  const { login } = useAuth();
+  const [serverError, setServerError] = useState("");
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<LoginInput>({ resolver: zodResolver(loginSchema) })
+  } = useForm<LoginInput>({ resolver: zodResolver(loginSchema) });
 
   async function onSubmit(data: LoginInput) {
-    setServerError('')
+    setServerError("");
     try {
-      await login(data)
-      navigate('/')
+      await login(data);
+      navigate("/");
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        const msg = (err.response?.data as { message?: string })?.message
-        setServerError(typeof msg === 'string' ? msg : 'Invalid credentials.')
+        const msg = (err.response?.data as { message?: string })?.message;
+        setServerError(typeof msg === "string" ? msg : "Invalid credentials.");
       } else {
-        setServerError('Something went wrong. Please try again.')
+        setServerError("Something went wrong. Please try again.");
       }
     }
   }
@@ -85,7 +85,7 @@ function SignInForm() {
           type="email"
           className="input-dark"
           placeholder="you@example.com"
-          {...register('email')}
+          {...register("email")}
         />
         <FieldError message={errors.email?.message} />
       </div>
@@ -96,7 +96,7 @@ function SignInForm() {
           type="password"
           className="input-dark"
           placeholder="••••••••"
-          {...register('password')}
+          {...register("password")}
         />
         <FieldError message={errors.password?.message} />
       </div>
@@ -105,37 +105,41 @@ function SignInForm() {
         <p className="mb-4 text-sm text-red-400">{serverError}</p>
       )}
 
-      <button type="submit" className="btn-primary w-full" disabled={isSubmitting}>
-        {isSubmitting ? 'Signing in…' : 'Sign In'}
+      <button
+        type="submit"
+        className="btn-primary w-full"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? "Signing in…" : "Sign In"}
       </button>
     </form>
-  )
+  );
 }
 
 // ── Sign Up Form ──────────────────────────────────────────────────────────────
 function SignUpForm() {
-  const navigate = useNavigate()
-  const { register: registerUser } = useAuth()
-  const [serverError, setServerError] = useState('')
-  const [passwordValue, setPasswordValue] = useState('')
+  const navigate = useNavigate();
+  const { register: registerUser } = useAuth();
+  const [serverError, setServerError] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
 
   const {
     register,
     handleSubmit,
     formState: { errors, isSubmitting },
-  } = useForm<RegisterInput>({ resolver: zodResolver(registerSchema) })
+  } = useForm<RegisterInput>({ resolver: zodResolver(registerSchema) });
 
   async function onSubmit(data: RegisterInput) {
-    setServerError('')
+    setServerError("");
     try {
-      await registerUser(data)
-      navigate('/')
+      await registerUser(data);
+      navigate("/");
     } catch (err) {
       if (axios.isAxiosError(err)) {
-        const msg = (err.response?.data as { message?: string })?.message
-        setServerError(typeof msg === 'string' ? msg : 'Registration failed.')
+        const msg = (err.response?.data as { message?: string })?.message;
+        setServerError(typeof msg === "string" ? msg : "Registration failed.");
       } else {
-        setServerError('Something went wrong. Please try again.')
+        setServerError("Something went wrong. Please try again.");
       }
     }
   }
@@ -148,7 +152,7 @@ function SignUpForm() {
           type="text"
           className="input-dark"
           placeholder="Your name"
-          {...register('name')}
+          {...register("name")}
         />
         <FieldError message={errors.name?.message} />
       </div>
@@ -159,7 +163,7 @@ function SignUpForm() {
           type="email"
           className="input-dark"
           placeholder="you@example.com"
-          {...register('email')}
+          {...register("email")}
         />
         <FieldError message={errors.email?.message} />
       </div>
@@ -170,7 +174,7 @@ function SignUpForm() {
           type="password"
           className="input-dark"
           placeholder="••••••••"
-          {...register('password', {
+          {...register("password", {
             onChange: (e: React.ChangeEvent<HTMLInputElement>) =>
               setPasswordValue(e.target.value),
           })}
@@ -183,16 +187,20 @@ function SignUpForm() {
         <p className="mb-4 text-sm text-red-400">{serverError}</p>
       )}
 
-      <button type="submit" className="btn-primary w-full" disabled={isSubmitting}>
-        {isSubmitting ? 'Creating account…' : 'Create Account'}
+      <button
+        type="submit"
+        className="btn-primary w-full"
+        disabled={isSubmitting}
+      >
+        {isSubmitting ? "Creating account…" : "Create Account"}
       </button>
     </form>
-  )
+  );
 }
 
 // ── AuthPage ──────────────────────────────────────────────────────────────────
 export default function AuthPage() {
-  const [tab, setTab] = useState<'signin' | 'signup'>('signin')
+  const [tab, setTab] = useState<"signin" | "signup">("signin");
 
   return (
     <div className="flex min-h-screen items-center justify-center px-4">
@@ -209,30 +217,30 @@ export default function AuthPage() {
         <div className="mb-8 flex rounded-xl bg-white/[0.04] p-1">
           <button
             type="button"
-            onClick={() => setTab('signin')}
+            onClick={() => setTab("signin")}
             className={`flex-1 rounded-lg py-2 text-sm font-medium transition-all duration-150 ${
-              tab === 'signin'
-                ? 'bg-accent text-white shadow'
-                : 'text-white/50 hover:text-white'
+              tab === "signin"
+                ? "bg-accent text-white shadow"
+                : "text-white/50 hover:text-white"
             }`}
           >
             Sign In
           </button>
           <button
             type="button"
-            onClick={() => setTab('signup')}
+            onClick={() => setTab("signup")}
             className={`flex-1 rounded-lg py-2 text-sm font-medium transition-all duration-150 ${
-              tab === 'signup'
-                ? 'bg-accent text-white shadow'
-                : 'text-white/50 hover:text-white'
+              tab === "signup"
+                ? "bg-accent text-white shadow"
+                : "text-white/50 hover:text-white"
             }`}
           >
             Sign Up
           </button>
         </div>
 
-        {tab === 'signin' ? <SignInForm /> : <SignUpForm />}
+        {tab === "signin" ? <SignInForm /> : <SignUpForm />}
       </div>
     </div>
-  )
+  );
 }

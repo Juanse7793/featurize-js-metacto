@@ -1,24 +1,19 @@
-import { lazy, Suspense } from 'react'
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-} from 'react-router-dom'
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
-import { Toaster } from 'react-hot-toast'
-import { useAuthStore } from '@/store/auth.store'
+import { lazy, Suspense } from "react";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "react-hot-toast";
+import { useAuthStore } from "@/store/auth.store";
 
-const HomePage = lazy(() => import('@/pages/HomePage'))
-const AuthPage = lazy(() => import('@/pages/AuthPage'))
-const AdminPage = lazy(() => import('@/pages/AdminPage'))
+const HomePage = lazy(() => import("@/pages/HomePage"));
+const AuthPage = lazy(() => import("@/pages/AuthPage"));
+const AdminPage = lazy(() => import("@/pages/AdminPage"));
 
-const queryClient = new QueryClient()
+const queryClient = new QueryClient();
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
-  const isAuthenticated = useAuthStore((s) => s.isAuthenticated)
-  if (!isAuthenticated) return <Navigate to="/auth" replace />
-  return <>{children}</>
+  const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+  if (!isAuthenticated) return <Navigate to="/auth" replace />;
+  return <>{children}</>;
 }
 
 export default function App() {
@@ -51,14 +46,14 @@ export default function App() {
         position="bottom-right"
         toastOptions={{
           style: {
-            background: '#0f0f1a',
-            color: 'white',
-            border: '1px solid rgba(255,255,255,0.08)',
+            background: "#0f0f1a",
+            color: "white",
+            border: "1px solid rgba(255,255,255,0.08)",
           },
-          success: { icon: '✅' },
-          error: { icon: '❌' },
+          success: { icon: "✅" },
+          error: { icon: "❌" },
         }}
       />
     </QueryClientProvider>
-  )
+  );
 }
