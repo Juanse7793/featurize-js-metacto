@@ -99,7 +99,9 @@ export default function FeatureCard({ feature }: { feature: Feature }) {
             {(feature.authorName.includes("@")
               ? feature.authorName.split("@")[0]
               : feature.authorName
-            ).charAt(0).toUpperCase()}
+            )
+              .charAt(0)
+              .toUpperCase()}
           </div>
           <span style={{ color: "rgba(255,255,255,0.4)", fontSize: 12 }}>
             {feature.authorName.includes("@")

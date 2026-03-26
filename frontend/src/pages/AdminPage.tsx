@@ -14,11 +14,7 @@ const STATUS_OPTIONS: { label: string; value: Feature["status"] }[] = [
   { label: "Done", value: "DONE" },
 ];
 
-function StatusSelect({
-  feature,
-}: {
-  feature: Feature;
-}) {
+function StatusSelect({ feature }: { feature: Feature }) {
   const { mutate, isPending } = useUpdateStatus();
 
   function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
@@ -80,13 +76,29 @@ export default function AdminPage() {
         style={{ maxWidth: 900, margin: "0 auto", padding: "40px 20px 60px" }}
       >
         {/* Header */}
-        <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 8 }}>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 10,
+            marginBottom: 8,
+          }}
+        >
           <Shield size={22} style={{ color: "#6366f1" }} />
-          <h1 style={{ color: "white", fontSize: 24, fontWeight: 700, margin: 0 }}>
+          <h1
+            style={{ color: "white", fontSize: 24, fontWeight: 700, margin: 0 }}
+          >
             Admin Panel
           </h1>
         </div>
-        <p style={{ color: "rgba(255,255,255,0.4)", fontSize: 14, marginTop: 4, marginBottom: 32 }}>
+        <p
+          style={{
+            color: "rgba(255,255,255,0.4)",
+            fontSize: 14,
+            marginTop: 4,
+            marginBottom: 32,
+          }}
+        >
           Manage feature request statuses
         </p>
 
@@ -127,11 +139,16 @@ export default function AdminPage() {
 
           {/* Rows */}
           {isLoading ? (
-            Array.from({ length: 5 }).map((_, i) => (
-              <SkeletonRow key={i} />
-            ))
+            Array.from({ length: 5 }).map((_, i) => <SkeletonRow key={i} />)
           ) : features.length === 0 ? (
-            <div style={{ padding: "40px 20px", textAlign: "center", color: "rgba(255,255,255,0.3)", fontSize: 14 }}>
+            <div
+              style={{
+                padding: "40px 20px",
+                textAlign: "center",
+                color: "rgba(255,255,255,0.3)",
+                fontSize: 14,
+              }}
+            >
               No features found
             </div>
           ) : (
@@ -175,7 +192,9 @@ export default function AdminPage() {
                     ? feature.authorName.split("@")[0]
                     : feature.authorName}
                 </div>
-                <div style={{ color: "#6366f1", fontWeight: 600, fontSize: 13 }}>
+                <div
+                  style={{ color: "#6366f1", fontWeight: 600, fontSize: 13 }}
+                >
                   {feature.voteCount}
                 </div>
                 <div>
@@ -220,4 +239,3 @@ function SkeletonRow() {
     </div>
   );
 }
-
