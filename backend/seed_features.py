@@ -12,12 +12,20 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "config.settings")
 django.setup()
 
 from apps.auth_app.services import UserService
+from apps.features.services import FeatureService
 from config.dynamodb import get_table, FEATURES_TABLE
 
 user_service = UserService()
+feature_service = FeatureService()
+
 admin = user_service.get_user_by_email("admin@featurize.com")
 if admin is None:
     print("Error: admin@featurize.com not found. Run seed.py first.")
+    sys.exit(1)
+
+regular_user = user_service.get_user_by_email("user@featurize.com")
+if regular_user is None:
+    print("Error: user@featurize.com not found. Run seed.py first.")
     sys.exit(1)
 
 FEATURES = [
@@ -81,6 +89,7 @@ FEATURES = [
 
 table = get_table(FEATURES_TABLE)
 now = datetime.now(timezone.utc)
+seeded_ids: list[str] = []
 
 for feat in FEATURES:
     feature_id = str(uuid.uuid4())
@@ -100,6 +109,17 @@ for feat in FEATURES:
     }
 
     table.put_item(Item=item)
+    seeded_ids.append(feature_id)
     print(f"  Created: {feat['title']} ({feat['status']}, {feat['voteCount']} votes)")
 
 print("\nFeatures seeded successfully")
+
+# Add votes for user@featurize.com on features at index 0, 2, 4, 6 (1st, 3rd, 5th, 7th)
+print("\nAdding votes for user@featurize.com...")
+user_id = regular_user["id"]
+for idx in [0, 2, 4, 6]:
+    feature_id = seeded_ids[idx]
+    feature_service.toggle_vote(user_id=user_id, feature_id=feature_id)
+    print(f"  Voted on feature #{idx + 1}: {FEATURES[idx]['title']}")
+
+print("\nVotes seeded successfully")

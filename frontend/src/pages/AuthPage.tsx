@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Zap } from "lucide-react";
+import { AnimatePresence, motion } from "framer-motion";
 import { useAuth } from "@/hooks/useAuth";
 import { loginSchema, registerSchema } from "@/validations";
 import type { LoginInput, RegisterInput } from "@/validations";
@@ -239,7 +240,29 @@ export default function AuthPage() {
           </button>
         </div>
 
-        {tab === "signin" ? <SignInForm /> : <SignUpForm />}
+        <AnimatePresence mode="wait" initial={false}>
+          {tab === "signin" ? (
+            <motion.div
+              key="signin"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: -20 }}
+              transition={{ duration: 0.18 }}
+            >
+              <SignInForm />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="signup"
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.18 }}
+            >
+              <SignUpForm />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </div>
   );

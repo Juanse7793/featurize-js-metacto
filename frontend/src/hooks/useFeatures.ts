@@ -83,5 +83,21 @@ export function useVote() {
   });
 }
 
+export function useUpdateStatus() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: ({
+      featureId,
+      status,
+    }: {
+      featureId: string;
+      status: string;
+    }) => featureService.updateStatus(featureId, status),
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: QUERY_KEYS.features.all });
+    },
+  });
+}
+
 // Re-export so consumers can import from one place
 export { type FeaturesFilters };

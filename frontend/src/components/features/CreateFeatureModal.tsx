@@ -42,7 +42,9 @@ function ModalContent({ onClose }: { onClose: () => void }) {
           toast.success("Feature submitted! 🎉");
         },
         onError: (err) => {
-          toast.error(err instanceof Error ? err.message : "Failed to submit feature.");
+          toast.error(
+            err instanceof Error ? err.message : "Failed to submit feature.",
+          );
         },
       },
     );
@@ -104,7 +106,9 @@ function ModalContent({ onClose }: { onClose: () => void }) {
           }}
         >
           <Lightbulb size={18} style={{ color: "#6366f1", flexShrink: 0 }} />
-          <span style={{ color: "white", fontWeight: 700, fontSize: 18, flex: 1 }}>
+          <span
+            style={{ color: "white", fontWeight: 700, fontSize: 18, flex: 1 }}
+          >
             Suggest a Feature
           </span>
           <button
